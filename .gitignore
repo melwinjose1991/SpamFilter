@@ -3,6 +3,12 @@
 .project
 .classpath
 
+corpus-classified/ham/*
+corpus-classified/spam/*
+
+corpus-to_be_classified/ham/*
+corpus-to_be_classified/spam/*
+corpus-to_be_classified/to classify/*
 
 # Windows image file caches
 Thumbs.db
