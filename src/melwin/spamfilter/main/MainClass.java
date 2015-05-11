@@ -16,7 +16,7 @@ public class MainClass {
 		AllMaps.initAllMaps();
 		
 		File[] mailFiles = new File[1];
-		mailFiles[0] = new File("00001.7848dde101aa985090474a91ec93fcf0");
+		mailFiles[0] = new File("testing\\00001.7848dde101aa985090474a91ec93fcf0");
 		  String host = "host.com";
 		  java.util.Properties properties = System.getProperties();
 		  properties.setProperty("mail.smtp.host", host);

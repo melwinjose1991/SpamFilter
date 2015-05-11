@@ -35,7 +35,7 @@ public class SubjectProcessor extends BaseProcessor {
 						}
 					}else{
 						// common word, do nothing
-						System.out.println("{ \""+token+"\" -> \""+processedToken+"\" } COMMON WORD/INVALID WORD");
+						System.out.println("{ \""+token+"\" -> \""+processedToken+"\" } COMMON WORD/INVALID TOKEN");
 					}
 				}
 			}
