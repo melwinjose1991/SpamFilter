@@ -8,6 +8,7 @@ import javax.mail.internet.MimeMessage;
 import melwin.spamfilter.main.AllMaps;
 
 public class SubjectProcessor extends BaseProcessor {
+	private static final boolean DEBUG_SUBJECT_PROCESSOR = true;
 
 	public SubjectProcessor() {
 		setHeader(POEProperties.SUBJECT_HEADER);
@@ -28,14 +29,16 @@ public class SubjectProcessor extends BaseProcessor {
 						if(map.containsKey(processedToken)){
 							int old_val = map.get(processedToken);
 							map.put(processedToken, old_val+getWeight());
-							System.out.println("{ \""+token+"\" -> \""+processedToken+"\" } {"+old_val+"->"+(old_val+getWeight()+"} EXISTING TOKEN "));
+							if(DEBUG_SUBJECT_PROCESSOR)
+								System.out.println("{ \""+token+"\" -> \""+processedToken+"\" } {"+old_val+"->"+(old_val+getWeight()+"} EXISTING TOKEN "));
 						}else{
 							map.put(processedToken, getWeight());
-							System.out.println("{ \""+token+"\" -> \""+processedToken+"\" } {"+getWeight()+"} NEW TOKEN ");
+							if(DEBUG_SUBJECT_PROCESSOR)
+								System.out.println("{ \""+token+"\" -> \""+processedToken+"\" } {"+getWeight()+"} NEW TOKEN ");
 						}
 					}else{
-						// common word, do nothing
-						System.out.println("{ \""+token+"\" -> \""+processedToken+"\" } COMMON WORD/INVALID TOKEN");
+						if(DEBUG_SUBJECT_PROCESSOR)
+							System.out.println("{ \""+token+"\" -> \""+processedToken+"\" } COMMON WORD/INVALID TOKEN");
 					}
 				}
 			}
