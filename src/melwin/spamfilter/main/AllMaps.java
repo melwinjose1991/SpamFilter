@@ -28,6 +28,7 @@ public class AllMaps {
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 		String line = null;
 		while ((line = br.readLine()) != null) {
+			if(line.trim().length() == 0) continue;
 			if(line.charAt(0)=='#') continue;	//comments in resources file
 			if(DEBUG_COMMON_WORDS_MAP) System.out.println(line);
 			commonWords.add(line.toLowerCase());
