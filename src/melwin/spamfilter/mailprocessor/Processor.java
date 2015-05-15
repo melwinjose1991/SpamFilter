@@ -1,16 +1,14 @@
 package melwin.spamfilter.mailprocessor;
 
-import java.util.HashMap;
-
 import javax.mail.internet.MimeMessage;
 
-public abstract class BaseProcessor {
+public abstract class Processor {
 	private String header;
 	private String spliter = " ";
 	private int weight = 1;
 	private boolean convertToLower = true;
 
-	public abstract void process(MimeMessage email, HashMap<String, Integer> map);
+	public abstract void process(MimeMessage email, ActionClass action);
 
 	public boolean validToken(String token) {
 		String input = token.trim();

@@ -38,7 +38,7 @@ public class FileEmailLoader extends EmailLoader {
 
 		if (index >= noOfEmails)
 			return null;
-		if(DEBUG_EMAIL_LOADER) System.out.println("FILE["+index+"]"+mailFiles[index].getName());
+		if(DEBUG_EMAIL_LOADER) System.out.println("\nFILE["+index+"]"+mailFiles[index].getName());
 		FileInputStream fis = new FileInputStream(mailFiles[index++]);
 		return new MimeMessage(session, fis);
 

@@ -1,16 +1,14 @@
 package melwin.spamfilter.mailprocessor;
 
-import java.util.HashMap;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import melwin.spamfilter.main.AllMaps;
 
-public class SubjectProcessor extends BaseProcessor {
+public class ProcessSubject extends Processor {
 	private static final boolean DEBUG_SUBJECT_PROCESSOR = true;
 
-	public SubjectProcessor() {
+	public ProcessSubject() {
 		setHeader(POEProperties.SUBJECT_HEADER);
 		setWeight(POEProperties.SUBJECT_WIEGHT);
 		setSpliter(POEProperties.SUBJECT_SPLIT_REGEX);
@@ -18,7 +16,7 @@ public class SubjectProcessor extends BaseProcessor {
 	}
 
 	@Override
-	public void process(MimeMessage email, HashMap<String, Integer> map) {
+	public void process(MimeMessage email, ActionClass action) {
 		try {
 			String values[] = email.getHeader(getHeader());
 			if(values == null ) return;		// no subject(s) header
@@ -28,30 +26,16 @@ public class SubjectProcessor extends BaseProcessor {
 				String tokens[] = value.split(getSpliter());
 				
 				for(String token : tokens){
+					if(token.trim().length()==0) continue;
 					String processedToken = processToken(token);
 					if(validToken(processedToken) && !AllMaps.getCommonWords().contains(processedToken)){
-						if(map.containsKey(processedToken)){
-							int old_val = map.get(processedToken);
-							map.put(processedToken, old_val+getWeight());
-							if(DEBUG_SUBJECT_PROCESSOR)
-								System.out.println("{ \""+token+"\" -> \""+processedToken+"\" } "
-										+ "{"+old_val+"->"+(old_val+getWeight()+"} EXISTING TOKEN "));
-						}else{
-							map.put(processedToken, getWeight());
-							if(DEBUG_SUBJECT_PROCESSOR)
-								System.out.println("{ \""+token+"\" -> \""+processedToken+"\" } "
-										+ "{"+getWeight()+"} NEW TOKEN ");
-						}
+						System.out.print("{"+token+" ");
+						action.performAction(processedToken, getWeight());
 					}else{
-						/*
 						 if(DEBUG_SUBJECT_PROCESSOR)
-						 
-							System.out.println("{ \""+token+"\" -> \""+processedToken+"\" } "
-									+ "COMMON WORD/INVALID TOKEN");
-						*/
+							System.out.println("{ \""+token+"\" -> \""+processedToken+"\" } "+"COMMON WORD/INVALID TOKEN");
 					}
 				}
-				
 			}
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block

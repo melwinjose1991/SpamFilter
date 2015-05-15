@@ -12,7 +12,9 @@ import java.util.Set;
 public class AllMaps {
 	private static final boolean DEBUG_COMMON_WORDS_MAP = false;
 	private static HashMap<String, Integer> spam;
+	private static int spamTotalWords=0;
 	private static HashMap<String, Integer> ham;
+	private static int hamTotalWords=0;
 	private static Set<String> commonWords;
 
 	public static void initAllMaps() throws IOException {
@@ -47,6 +49,22 @@ public class AllMaps {
 
 	public static HashMap<String, Integer> getHam() {
 		return ham;
+	}
+
+	public static int getSpamTotalWords() {
+		return spamTotalWords;
+	}
+
+	public static void incrementSpamTotalWords() {
+		AllMaps.spamTotalWords++;
+	}
+
+	public static int getHamTotalWords() {
+		return hamTotalWords;
+	}
+
+	public static void incrementHamTotalWords() {
+		AllMaps.hamTotalWords++;
 	}
 
 }
