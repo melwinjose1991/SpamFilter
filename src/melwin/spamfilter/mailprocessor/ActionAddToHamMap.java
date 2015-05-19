@@ -13,7 +13,7 @@ public class ActionAddToHamMap extends ActionClass{
 	}
 	
 	@Override
-	public void performAction(String processedToken, int weight) {
+	public double performAction(String processedToken, int weight) {
 		if(map.containsKey(processedToken)){
 			int old_val = map.get(processedToken);
 			map.put(processedToken, old_val+weight);
@@ -25,6 +25,7 @@ public class ActionAddToHamMap extends ActionClass{
 				System.out.println("-> \""+processedToken+"\" } "+ "{"+weight+"} NEW TOKEN ");
 		}
 		AllMaps.incrementHamTotalWords();
+		return 0;
 	}
 
 }

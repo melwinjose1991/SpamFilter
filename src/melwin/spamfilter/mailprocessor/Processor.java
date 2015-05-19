@@ -8,7 +8,7 @@ public abstract class Processor {
 	private int weight = 1;
 	private boolean convertToLower = true;
 
-	public abstract void process(MimeMessage email, ActionClass action);
+	public abstract double process(MimeMessage email, ActionClass action);
 
 	public boolean validToken(String token) {
 		String input = token.trim();

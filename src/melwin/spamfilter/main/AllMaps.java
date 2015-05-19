@@ -11,6 +11,7 @@ import java.util.Set;
 
 public class AllMaps {
 	private static final boolean DEBUG_COMMON_WORDS_MAP = false;
+	
 	private static HashMap<String, Integer> spam;
 	private static int spamTotalWords=0;
 	private static HashMap<String, Integer> ham;

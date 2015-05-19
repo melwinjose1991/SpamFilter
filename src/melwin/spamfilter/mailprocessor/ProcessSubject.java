@@ -4,6 +4,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import melwin.spamfilter.main.AllMaps;
+import melwin.spamfilter.main.Utils;
 
 public class ProcessSubject extends Processor {
 	private static final boolean DEBUG_SUBJECT_PROCESSOR = true;
@@ -16,10 +17,11 @@ public class ProcessSubject extends Processor {
 	}
 
 	@Override
-	public void process(MimeMessage email, ActionClass action) {
+	public double process(MimeMessage email, ActionClass action) {
 		try {
+			double res=1, temp;
 			String values[] = email.getHeader(getHeader());
-			if(values == null ) return;		// no subject(s) header
+			if(values == null ) return 0;		// no subject(s) header
 			
 			for(String value : values){
 				if(DEBUG_SUBJECT_PROCESSOR) System.out.println("Subject : {"+value+"}");
@@ -29,17 +31,26 @@ public class ProcessSubject extends Processor {
 					if(token.trim().length()==0) continue;
 					String processedToken = processToken(token);
 					if(validToken(processedToken) && !AllMaps.getCommonWords().contains(processedToken)){
-						System.out.print("{"+token+" ");
-						action.performAction(processedToken, getWeight());
+						if(DEBUG_SUBJECT_PROCESSOR) System.out.print("\t{"+token+" ");
+						temp = action.performAction(processedToken, getWeight());
+						if(temp==Utils.NO_RETURN){
+							// return value not to be evaluated, 
+							// i.e when training is going on
+						}else{
+							// when testing on sample data or actual new i/p
+							res = res * temp;
+						}
 					}else{
 						 if(DEBUG_SUBJECT_PROCESSOR)
-							System.out.println("{ \""+token+"\" -> \""+processedToken+"\" } "+"COMMON WORD/INVALID TOKEN");
+							;//System.out.println("{ \""+token+"\" -> \""+processedToken+"\" } "+"COMMON WORD/INVALID TOKEN");
 					}
 				}
 			}
+			return res;
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return 0;
 	}
 }
