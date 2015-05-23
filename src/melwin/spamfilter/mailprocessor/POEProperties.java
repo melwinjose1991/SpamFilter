@@ -6,5 +6,10 @@ public class POEProperties {
 	public static final int SUBJECT_WIEGHT = 4;
 	public static final String SUBJECT_SPLIT_REGEX = " |-|/|\\.|-|,|:";
 	public static final boolean SUBJECT_CONVERT_TO_LOWER = true;
+	
+	public static final String FROM_HEADER = "FROM";
+	public static final int FROM_WIEGHT = 10;
+	public static final String FROM_SPLIT_REGEX = " |<|>";
+	public static final boolean FROM_CONVERT_TO_LOWER = true;
 
 }

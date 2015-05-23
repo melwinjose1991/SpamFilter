@@ -55,6 +55,10 @@ public class FileEmailLoader extends EmailLoader {
 		return new MimeMessage(session, fis);
 
 	}
+	
+	public String getCurrentMailId(){
+		return new String(index+"");
+	}
 
 	public boolean isTraining() {
 		return isTraining;

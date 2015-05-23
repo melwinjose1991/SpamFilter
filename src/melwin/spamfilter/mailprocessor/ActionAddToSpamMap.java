@@ -3,6 +3,7 @@ package melwin.spamfilter.mailprocessor;
 import java.util.HashMap;
 
 import melwin.spamfilter.main.AllMaps;
+import melwin.spamfilter.main.Utils;
 
 public class ActionAddToSpamMap extends ActionClass{
 	private static boolean DEBUG_ACTION_ON_SPAM_MAP = true;
@@ -25,7 +26,7 @@ public class ActionAddToSpamMap extends ActionClass{
 				System.out.println("-> \""+processedToken+"\" } "+ "{"+weight+"} NEW TOKEN ");
 		}
 		AllMaps.incrementSpamTotalWords();
-		return 0;
+		return Utils.NO_RETURN;
 	}
 
 }
