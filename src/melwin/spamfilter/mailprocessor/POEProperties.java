@@ -11,5 +11,10 @@ public class POEProperties {
 	public static final int FROM_WIEGHT = 10;
 	public static final String FROM_SPLIT_REGEX = " |<|>";
 	public static final boolean FROM_CONVERT_TO_LOWER = true;
+	
+	public static final String RECEIVED_HEADER = "Received";
+	public static final int RECEIVED_WIEGHT = 100;
+	public static final String RECEIVED_SPLIT_REGEX = " |\\[|\\]|<|>|\\(|\\)|\\\r\\\n";
+	public static final boolean RECEIVED_CONVERT_TO_LOWER = true;
 
 }

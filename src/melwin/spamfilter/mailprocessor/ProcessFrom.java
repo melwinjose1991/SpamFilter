@@ -35,18 +35,18 @@ public class ProcessFrom extends Processor {
 			String froms[] = email.getHeader(getHeader());
 			
 			for(String from : froms){
-				if(DEBUG_FROM_PROCESSOR) System.out.println("<<< FROM:"+from+" >>>");
+				if(DEBUG_FROM_PROCESSOR) System.out.println("FROM : {"+from+"}");
 				String tokens[] = from.split(getSpliter());
 				
 				for(String token : tokens){
 					if(token.trim().length()==0) continue;
 					String processedToken = processToken(token);
 					if(validToken(processedToken)){
-						if(DEBUG_FROM_PROCESSOR) System.out.print("{"+token+"}");
+						if(DEBUG_FROM_PROCESSOR) System.out.print("\t{"+token+"}");
 						matcher = pattern.matcher(token);
 						if (matcher.find()) {
 							temp=action.performAction(token, getWeight());
-							if(DEBUG_FROM_PROCESSOR) System.out.println("<< CONTAINS EMAIL ID >>");
+							if(DEBUG_FROM_PROCESSOR) System.out.println("\t<< CONTAINS EMAIL ID >>");
 							if(temp==Utils.NO_RETURN){
 								// return value not to be evaluated, 
 								// i.e when training is going on

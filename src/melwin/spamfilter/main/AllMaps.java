@@ -36,6 +36,7 @@ public class AllMaps {
 			if(DEBUG_COMMON_WORDS_MAP) System.out.println(line);
 			commonWords.add(line.toLowerCase());
 		}
+		//commonWords.add("re");	// for RE in subject
 		br.close();
 		fis.close();
 	}

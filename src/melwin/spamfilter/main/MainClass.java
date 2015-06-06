@@ -2,18 +2,19 @@ package melwin.spamfilter.main;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream.GetField;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.rmi.CORBA.Util;
 
 import melwin.spamfilter.mailprocessor.ActionAddToHamMap;
 import melwin.spamfilter.mailprocessor.ActionAddToSpamMap;
+import melwin.spamfilter.mailprocessor.ActionCheckBL;
 import melwin.spamfilter.mailprocessor.ActionClass;
 import melwin.spamfilter.mailprocessor.ActionHamProbability;
 import melwin.spamfilter.mailprocessor.ActionSpamProbability;
+import melwin.spamfilter.mailprocessor.POEProperties;
 import melwin.spamfilter.mailprocessor.ProcessFrom;
+import melwin.spamfilter.mailprocessor.ProcessReceived;
 import melwin.spamfilter.mailprocessor.ProcessSubject;
 import melwin.spamfilter.mailprocessor.Processor;
 
@@ -28,6 +29,7 @@ public class MainClass {
 		MimeMessage email;
 		Processor baseProcessor = new ProcessSubject();
 		Processor fromProcessor = new ProcessFrom();
+		Processor receivedProcessor = new ProcessReceived();
 		
 		EmailLoader spamEailLoader = new FileEmailLoader();
 		spamEailLoader.init("corpus-classified\\spam", Utils.TOTAL_MAILS, Utils.FOR_TRAINING);
@@ -38,7 +40,8 @@ public class MainClass {
 		ActionClass addToHam = new ActionAddToHamMap();
 		ActionClass spamProb = new ActionSpamProbability();
 		ActionClass hamProb = new ActionHamProbability();
-		double p_spam_subject, p_spam_from, p_spam;
+		ActionClass checkBL = new ActionCheckBL();
+		double p_spam_subject, p_spam_from, p_spam_received ,p_spam;
 		double p_ham_subject, p_ham_from, p_ham; 
 		double P_spam, P_ham;
 		
@@ -47,6 +50,9 @@ public class MainClass {
 		
 		int failedHamClassifications[] = new int[Utils.TOTAL_MAILS-Utils.FOR_TRAINING];
 		int failedHamClassificationsSize=0;
+		
+		int ipClassifications[] = new int[Utils.TOTAL_MAILS-Utils.FOR_TRAINING];
+		int ipClassificationsSize=0;
 		try {
 
 			// learning spam email
@@ -54,13 +60,13 @@ public class MainClass {
 				baseProcessor.process(email, addToSpam);
 				fromProcessor.process(email, addToSpam);
 			}
-			
 			// learning ham email
 			while ((email = hamEailLoader.getNextEmail()) != null) {
 				baseProcessor.process(email, addToHam);
 				fromProcessor.process(email, addToHam);
 			}
 			
+
 			// testing spam email
 			System.out.println("\n\n<<< Started classifying sample SPAM emails >>>");
 			while ((email = spamEailLoader.getNextEmail()) != null) {
@@ -70,7 +76,12 @@ public class MainClass {
 				p_spam_from = fromProcessor.process(email, spamProb);
 				p_ham_from = fromProcessor.process(email, hamProb);
 				
-				p_spam = p_spam_from * p_spam_subject;
+				p_spam_received = receivedProcessor.process(email, checkBL);
+				if(p_spam_received==1){
+					ipClassifications[ipClassificationsSize++]= Integer.parseInt(spamEailLoader.getCurrentMailId()); 
+				}
+				
+				p_spam = (p_spam_from * p_spam_subject)+(p_spam_received==1?POEProperties.RECEIVED_WIEGHT:0);
 				p_ham = p_ham_from * p_ham_subject;
 				P_spam = p_spam / (p_spam+p_ham);
 				P_ham = p_ham / (p_spam+p_ham);
@@ -89,6 +100,12 @@ public class MainClass {
 			}
 			System.out.println(" }");
 			
+			System.out.print("\n\n<<< SPAM CLASSIFICATIONS USING IP BLACK LIST>>> : { ");
+			for(int i=0;i<ipClassificationsSize;i++){
+				System.out.print(ipClassifications[i]+",");
+			}
+			System.out.println(" }");
+
 			// testing ham email
 			System.out.println("\n\n<<< Started classifying sample HAM emails >>>");
 			while ((email = hamEailLoader.getNextEmail()) != null) {
