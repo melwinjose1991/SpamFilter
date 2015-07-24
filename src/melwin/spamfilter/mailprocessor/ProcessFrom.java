@@ -9,7 +9,7 @@ import javax.mail.internet.MimeMessage;
 import melwin.spamfilter.main.Utils;
 
 public class ProcessFrom extends Processor {
-	private static final boolean DEBUG_FROM_PROCESSOR = true;
+	private static final boolean DEBUG_FROM_PROCESSOR = Utils.DEBUG_ALL | false;
 	
 	Pattern pattern;
 	Matcher matcher;

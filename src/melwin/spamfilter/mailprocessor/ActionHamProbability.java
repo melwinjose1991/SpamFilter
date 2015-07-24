@@ -3,9 +3,10 @@ package melwin.spamfilter.mailprocessor;
 import java.util.HashMap;
 
 import melwin.spamfilter.main.AllMaps;
+import melwin.spamfilter.main.Utils;
 
 public class ActionHamProbability extends ActionClass{
-	private static boolean DEBUG_ACTION_CALC_SPAM_PROB = true;
+	private static boolean DEBUG_ACTION_CALC_SPAM_PROB = Utils.DEBUG_ALL | false;
 	private HashMap<String, Integer> map;
 	
 	public ActionHamProbability() {

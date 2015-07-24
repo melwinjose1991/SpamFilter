@@ -15,7 +15,7 @@ public abstract class Processor {
 		if (input.length() <= 0)
 			return false;
 		try {
-			Double.parseDouble(input);
+			Double.parseDouble(input);	// not taking number into account
 			return false;
 		} catch (NumberFormatException nfe) {
 			return true;

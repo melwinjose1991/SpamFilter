@@ -8,7 +8,7 @@ import java.util.Set;
 import melwin.spamfilter.main.Utils;
 
 public class ActionCheckBL extends ActionClass {
-	private static boolean DEBUG_ACTION_CHECK_BL = true;
+	private static boolean DEBUG_ACTION_CHECK_BL = Utils.DEBUG_ALL | false;
 	private Set<String> okIPs, blackListedIPs;
 
 	private String accessKey;

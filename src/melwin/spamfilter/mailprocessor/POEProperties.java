@@ -16,5 +16,10 @@ public class POEProperties {
 	public static final int RECEIVED_WIEGHT = 100;
 	public static final String RECEIVED_SPLIT_REGEX = " |\\[|\\]|<|>|\\(|\\)|\\\r\\\n";
 	public static final boolean RECEIVED_CONVERT_TO_LOWER = true;
+	
+	public static final String BODY_HEADER = "Body";
+	public static final int BODY_WIEGHT = 1;
+	public static final String BODY_SPLIT_REGEX = " |-|/|\\.|-|,|:|\\\r\\\n|\\n";
+	public static final boolean BODY_CONVERT_TO_LOWER = true;
 
 }

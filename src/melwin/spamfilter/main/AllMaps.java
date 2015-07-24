@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class AllMaps {
-	private static final boolean DEBUG_COMMON_WORDS_MAP = false;
+	private static final boolean DEBUG_COMMON_WORDS_MAP = Utils.DEBUG_ALL | false;
 	
 	private static HashMap<String, Integer> spam;
 	private static int spamTotalWords=0;
@@ -34,7 +34,7 @@ public class AllMaps {
 			if(line.trim().length() == 0) continue;
 			if(line.charAt(0)=='#') continue;	//comments in resources file
 			if(DEBUG_COMMON_WORDS_MAP) System.out.println(line);
-			commonWords.add(line.toLowerCase());
+			commonWords.add(line.toLowerCase().trim());
 		}
 		//commonWords.add("re");	// for RE in subject
 		br.close();

@@ -6,7 +6,7 @@ import melwin.spamfilter.main.AllMaps;
 import melwin.spamfilter.main.Utils;
 
 public class ActionAddToSpamMap extends ActionClass{
-	private static boolean DEBUG_ACTION_ON_SPAM_MAP = true;
+	private static boolean DEBUG_ACTION_ON_SPAM_MAP = Utils.DEBUG_ALL | false;
 	private HashMap<String, Integer> map;
 	
 	public ActionAddToSpamMap(){

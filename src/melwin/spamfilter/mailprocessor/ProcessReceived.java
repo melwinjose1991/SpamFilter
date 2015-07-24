@@ -10,7 +10,7 @@ import melwin.spamfilter.main.Utils;
 
 public class ProcessReceived extends Processor {
 
-	private static final boolean DEBUG_RECEIVED_PROCESSOR = true;
+	private static final boolean DEBUG_RECEIVED_PROCESSOR = Utils.DEBUG_ALL | false;
 	
 	private static final String IPADDRESS_PATTERN = 
 			"^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
@@ -37,11 +37,11 @@ public class ProcessReceived extends Processor {
 			String values[] = email.getHeader(getHeader());
 			if(values == null )  return Utils.NOT_SPAM;	// no received(s) header
 			
-			for(String value : values){
+			for(String value : values){	// looping through each received header
 				if(DEBUG_RECEIVED_PROCESSOR) System.out.println("Received : {"+value+"}");
 				String tokens[] = value.split(getSpliter());
 				
-				for(String token : tokens){
+				for(String token : tokens){	// looping through each token of a received header
 					if(token.trim().length()==0) continue;
 					String processedToken = processToken(token);
 					if(validToken(processedToken)){
