@@ -34,9 +34,9 @@ public class MainClass {
 		Processor bodyProcessor = new ProcessBody();
 		
 		EmailLoader spamEailLoader = new FileEmailLoader();
-		spamEailLoader.init("corpus-classified\\spam", Utils.TOTAL_MAILS, Utils.FOR_TRAINING);
+		spamEailLoader.init("corpus-classified\\spam", Utils.TOTAL_SPAM_MAILS, Utils.SPAM_FOR_TRAINING);
 		EmailLoader hamEailLoader = new FileEmailLoader();
-		hamEailLoader.init("corpus-classified\\ham", Utils.TOTAL_MAILS, Utils.FOR_TRAINING);
+		hamEailLoader.init("corpus-classified\\ham", Utils.TOTAL_HAM_MAILS, Utils.HAM_FOR_TRAINING);
 		
 		ActionClass addToSpam = new ActionAddToSpamMap();
 		ActionClass addToHam = new ActionAddToHamMap();
@@ -47,13 +47,13 @@ public class MainClass {
 		double p_ham_subject, p_ham_from, p_ham_body, p_ham; 
 		double P_spam, P_ham;
 		
-		int failedSpamClassifications[] = new int[Utils.TOTAL_MAILS-Utils.FOR_TRAINING];
+		int failedSpamClassifications[] = new int[Utils.TOTAL_SPAM_MAILS-Utils.SPAM_FOR_TRAINING];
 		int failedSpamClassificationsSize=0;
 		
-		int failedHamClassifications[] = new int[Utils.TOTAL_MAILS-Utils.FOR_TRAINING];
+		int failedHamClassifications[] = new int[Utils.TOTAL_SPAM_MAILS-Utils.SPAM_FOR_TRAINING];
 		int failedHamClassificationsSize=0;
 		
-		int ipClassifications[] = new int[Utils.TOTAL_MAILS-Utils.FOR_TRAINING];
+		int ipClassifications[] = new int[Utils.TOTAL_SPAM_MAILS-Utils.SPAM_FOR_TRAINING];
 		int ipClassificationsSize=0;
 		try {
 
@@ -83,7 +83,7 @@ public class MainClass {
 				p_ham_body = bodyProcessor.process(email, hamProb);
 				p_spam_body = bodyProcessor.process(email, spamProb);
 				
-				p_spam_received = receivedProcessor.process(email, checkBL);
+				p_spam_received = 0; //receivedProcessor.process(email, checkBL); // to enable checking email against blackList
 				if(p_spam_received==1){
 					ipClassifications[ipClassificationsSize++]= Integer.parseInt(spamEailLoader.getCurrentMailId()); 
 				}
@@ -132,7 +132,7 @@ public class MainClass {
 			for(int i=0;i<failedSpamClassificationsSize;i++){
 				System.out.print(failedSpamClassifications[i]+",");
 			}
-			System.out.println(" } TOTAL:"+failedSpamClassificationsSize+"/"+(Utils.TOTAL_MAILS-Utils.FOR_TRAINING)+" WRONG CLASSIFICATIONS");
+			System.out.println(" } TOTAL:"+failedSpamClassificationsSize+"/"+(Utils.TOTAL_SPAM_MAILS-Utils.SPAM_FOR_TRAINING)+" WRONG CLASSIFICATIONS");
 			
 			System.out.print("\n\n<<< SPAM CLASSIFICATIONS USING IP BLACK LIST>>> : { ");
 			for(int i=0;i<ipClassificationsSize;i++){
