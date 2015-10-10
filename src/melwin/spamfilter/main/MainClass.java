@@ -140,7 +140,6 @@ public class MainClass {
 			}
 			System.out.println(" }");
 
-			/*
 			// testing ham email
 			System.out.println("\n\n<<< Started classifying sample HAM emails >>>");
 			while ((email = hamEailLoader.getNextEmail()) != null) {
@@ -150,8 +149,43 @@ public class MainClass {
 				p_spam_from = fromProcessor.process(email, spamProb);
 				p_ham_from = fromProcessor.process(email, hamProb);
 				
+				p_ham_body = bodyProcessor.process(email, hamProb);
+				p_spam_body = bodyProcessor.process(email, spamProb);
+				
+				System.out.println(" SPAM : Subject:"+p_spam_subject+"\tFrom:"+p_spam_from+"\tBody:"+p_spam_body);
+				System.out.println(" HAM : Subject:"+p_ham_subject+"\tFrom:"+p_ham_from+"\tBody:"+p_ham_body);
+				
 				p_spam = p_spam_from * p_spam_subject;
+				if(p_spam == Double.NaN || p_spam==0) p_spam = Double.MIN_VALUE;
 				p_ham = p_ham_from * p_ham_subject;
+				if(p_ham == Double.NaN || p_ham==0) p_ham = Double.MIN_VALUE;
+				
+				System.out.println(" p_spam:"+p_spam+"\tp_ham:"+p_ham);
+				
+				if(p_ham == Double.MIN_VALUE && p_spam == Double.MIN_VALUE){
+					int spam_OR_ham=0;
+					if(p_spam_body < p_ham_body) spam_OR_ham++; else if(p_spam_body > p_ham_body) spam_OR_ham--; 
+					if(p_spam_from < p_ham_from) spam_OR_ham++; else if(p_spam_from > p_ham_from) spam_OR_ham--;
+					if(p_spam_subject < p_ham_subject) spam_OR_ham++; else if(p_spam_subject > p_ham_subject) spam_OR_ham--;
+					if(spam_OR_ham < 0){
+						System.out.println("Oh shit !!! this was a HAM [SPECIAL HACK]");
+						failedHamClassifications[failedHamClassificationsSize++] = Integer.parseInt(hamEailLoader.getCurrentMailId()); 
+					}else{
+						System.out.println("HAM, good job !!! [SPECIAL HACK]");
+					}
+					
+				}else{
+					P_spam = p_spam / (p_spam+p_ham);
+					P_ham = p_ham / (p_spam+p_ham);
+					System.out.println("P(SPAM)="+P_spam+"\tP(HAM)="+P_ham);
+					if(P_spam > P_ham){
+						System.out.println("Oh shit !!! this was a HAM");
+						failedHamClassifications[failedHamClassificationsSize++] = Integer.parseInt(hamEailLoader.getCurrentMailId()); 
+					}else{
+						System.out.println("HAM, good job !!!");
+					}
+				}
+				/*
 				P_spam = p_spam / (p_spam+p_ham);
 				P_ham = p_ham / (p_spam+p_ham);
 				System.out.println("P(SPAM)="+P_spam+"\tP(HAM)="+P_ham);
@@ -161,14 +195,14 @@ public class MainClass {
 					System.out.println("Oh shit !!! this was a HAM");
 					failedHamClassifications[failedHamClassificationsSize++] = Integer.parseInt(hamEailLoader.getCurrentMailId()); 
 				}
+				*/
 			}
 			
 			System.out.print("\n\n<<< FAILED HAM CLASSIFICATIONS >>> : { ");
 			for(int i=0;i<failedHamClassificationsSize;i++){
 				System.out.print(failedHamClassifications[i]+",");
 			}
-			System.out.println(" }");
-			*/
+			System.out.println(" } TOTAL:"+failedHamClassificationsSize+"/"+(Utils.TOTAL_HAM_MAILS-Utils.HAM_FOR_TRAINING)+" WRONG CLASSIFICATIONS");
 
 		} catch (MessagingException e) {
 			e.printStackTrace();
